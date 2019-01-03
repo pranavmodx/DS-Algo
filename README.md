@@ -1,2 +1,2 @@
 # pyDataStructures
-Data Structures in Python (Linked lists, stack, queues, trees, etc)
+Data Structures in Python (Linked lists, stacks, queues, trees, etc)
