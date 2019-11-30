@@ -1,2 +1,2 @@
-# pyDataStructures
-Data Structures in Python (Linked lists, stacks, queues, trees, etc)
+# DS-Algo
+Data Structures (linked lists, stacks, queues, trees, etc) and Algorithms (searching, hashing, sorting, etc)
