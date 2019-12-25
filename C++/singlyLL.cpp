@@ -26,6 +26,8 @@ public:
     int deleteAtEnd();
 
     void displayList();
+
+    ~singlyLL();
 };
 
 
@@ -273,4 +275,13 @@ int singlyLL::deleteAtEnd() {
     delete t;
 
     return elem;
+}
+
+singlyLL::~singlyLL() {
+    Node *temp = head;
+    int i;
+    for (i=0; i<countNodes(); i++) {
+        head = head->next;
+        delete temp;
+    }
 }
