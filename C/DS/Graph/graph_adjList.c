@@ -35,7 +35,7 @@ typedef struct Graph Graph;
 QNode* create_QNode(int vertex);
 void enqueue(QNode **qNode, int vertex);
 int dequeue(QNode **qNode);
-void displayQueue(QNode *qNode);
+void dispQ(QNode *qNode);
 
 
 // Graph functions
@@ -44,7 +44,7 @@ Graph* createGraph(int numV);
 
 void addEdge(Graph *graph, int v1, int d1, int v2, int d2);
 
-void displayAdjLists(Graph *graph);
+void dispAdjLists(Graph *graph);
 
 void BFS(Graph *graph, int startV);
 void DFS(Graph *graph, int startV);
@@ -93,7 +93,7 @@ int main() {
 					break;	
 
 			case 2:
-					displayAdjLists(graph);
+					dispAdjLists(graph);
 					printf("\n");
 					break;
 
@@ -154,7 +154,7 @@ void addEdge(Graph* graph, int v1,
 	graph->adjLists[v2] = newGNode;
 }
 
-void displayAdjLists(Graph *graph) {
+void dispAdjLists(Graph *graph) {
 	printf("Adjacency List");
 
 	int i;
@@ -180,7 +180,7 @@ void BFS(Graph *graph, int startV) {
 
 	int vertex;
 	while(qNode != NULL) {
-		// displayQueue(qNode);
+		// dispQ(qNode);
 
 		vertex = dequeue(&qNode);
 		// printf("%d\n", vertex);
@@ -264,7 +264,7 @@ int dequeue(QNode **qNode) {
 	return vertex;
 }
 
-void displayQueue(QNode *qNode) {
+void dispQ(QNode *qNode) {
 	if (qNode == NULL) {
 		printf("\nEmpty queue\n");
 		return;
