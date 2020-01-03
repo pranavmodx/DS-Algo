@@ -16,6 +16,7 @@ int binSearch(int arr[], int lower, int upper, int item)
         else
             return mid;
     }
+
     return -1;
 }
 
@@ -24,6 +25,8 @@ int main()
     int arr[] = {1, 4, 10, 15, 18, 19, 20, 25, 30, 31, 40};
     int n = sizeof(arr) / sizeof(arr[0]);
     int idx = binSearch(arr, 0, n, 19);
+
     printf("Element found at index %d \n", idx);
+    
     return 0;
 }

@@ -6,7 +6,7 @@ struct TNode {
     int data;
     struct TNode *leftChild;
     struct TNode *rightChild;
-} *bst = NULL;
+};
 
 typedef struct TNode TNode;
 
@@ -28,10 +28,10 @@ int isEmptyStack(SNode *top);
 
 // Tree create/insert functions
 TNode* createTreeNode(int elem);
-void insertTreeNode(TNode **root, int elem);
+void insertTreeNode(TNode *root, int elem);
 
 // Tree delete functions
-TNode* deleteNode(TNode **root, int elem);
+TNode* deleteTreeNode(TNode *root, int elem);
 
 // Tree display functions
 void inOrderDisplay(TNode *root);
@@ -48,27 +48,29 @@ TNode* minElement(TNode *root);
 TNode* maxElement(TNode *root);
 
 int main() {
-    bst = createTreeNode(10);
+    TNode *bst = NULL;
+    bst = createTreeNode(50);
 
-    insertTreeNode(&bst, 7); 
-    insertTreeNode(&bst, 14); 
-    // insertTreeNode(&bst, 20);
-    // insertTreeNode(&bst, 1);
-    // insertTreeNode(&bst, 5);
-    // insertTreeNode(&bst, 8);
+    insertTreeNode(bst, 30); 
+    insertTreeNode(bst, 20); 
+    insertTreeNode(bst, 40);
+    insertTreeNode(bst, 70);
+    insertTreeNode(bst, 60);
+    insertTreeNode(bst, 80);
     
     inOrderDisplay(bst);
-    deleteNode(&bst, 14);
+    deleteTreeNode(bst, 40);
     inOrderDisplay(bst);
+
+    maxElement(bst);
+    minElement(bst);
+
     // preOrderDisplay(bst);
     // postOrderDisplay(bst);
-    // printf("\n");
 
     // inOrderRecDisplay(bst);
     // printf("\n");
     
-    maxElement(bst);
-    minElement(bst);
     // preOrderRecDisplay(bst); 
     // printf("\n");
     // postOrderRecDisplay(bst);
@@ -87,67 +89,62 @@ TNode* createTreeNode(int elem) {
     return t;
 }
 
-void insertTreeNode(TNode **root, int elem) {
-    TNode *holdRoot = *root;
-
-    if (*root == NULL) {
-        *root = createTreeNode(elem);
+void insertTreeNode(TNode *root, int elem) {
+    if (root == NULL) {
+        root = createTreeNode(elem);
         return;
     } 
 
-    else {
-        while (*root != NULL) {
-            if (elem < (*root)->data) {
-                if ((*root)->leftChild == NULL) {
-                    (*root)->leftChild = createTreeNode(elem);
-                    break; // Important! I forgot break for infinite while
-                }
-                else 
-                    *root = (*root)->leftChild;
+    while (root != NULL) {
+        if (elem < root->data) {
+            if (root->leftChild == NULL) {
+                root->leftChild = createTreeNode(elem);
+                break; // Important! I forgot break for infinite while
             }
-            else if (elem > (*root)->data) {
-                if ((*root)->rightChild == NULL) {
-                    (*root)->rightChild = createTreeNode(elem);
-                    break;
-                }
-                else 
-                    *root = (*root)->rightChild;
-            } 
-            else
-                break;     
+            else 
+                root = root->leftChild;
         }
+        else if (elem > root->data) {
+            if (root->rightChild == NULL) {
+                root->rightChild = createTreeNode(elem);
+                break;
+            }
+            else 
+                root = root->rightChild;
+        } 
+        else
+            break;     
     }
-
-    *root = holdRoot;
 }
 
-TNode* deleteNode(TNode **root, int elem) {
-    TNode *holdRoot = *root;
+TNode* deleteTreeNode(TNode *root, int elem) {
+    if (root == NULL) 
+        return root;
 
-    if (*root == NULL)
-        return *root;
+    if (elem < root->data)
+        root->leftChild = deleteTreeNode(root->leftChild, elem);
 
-    while (*root != NULL && (*root)->data != elem) {
-        if ((*root)->data > elem)
-            *root = (*root)->leftChild;
-        else 
-            *root = (*root)->rightChild;
+    else if (elem > root->data)
+        root->rightChild = deleteTreeNode(root->rightChild, elem);
+
+    else {
+        if (root->leftChild == NULL) {
+            TNode *temp = root->rightChild;
+            free(root);
+            return temp;
+        }
+        else if (root->rightChild == NULL) {
+            TNode *temp = root->leftChild;
+            free(root);
+            return temp;
+        }
+        
+        TNode *temp = minElement(root->rightChild);
+        root->data = temp->data;
+        root->rightChild = deleteTreeNode(root->rightChild, elem);
     }
 
-    if ((*root)->leftChild == NULL) {
-        TNode *t = (*root)->rightChild;
-        free(*root);
-        return t;
-    }
-    else if ((*root)->rightChild == NULL) {
-        TNode *t = (*root)->leftChild;
-        free(*root);
-        return t;
-    }
-
-    TNode *t = minElement(*root);
-
-    *root = holdRoot;   
+    return root;
 }
 
 void inOrderDisplay(TNode *currentNode) {
@@ -169,6 +166,8 @@ void inOrderDisplay(TNode *currentNode) {
                 break;
         }
     }
+
+    printf("\n");
 }
 
 void preOrderDisplay(TNode *currentNode) {
@@ -186,6 +185,8 @@ void preOrderDisplay(TNode *currentNode) {
         if (currentNode->leftChild) 
             pushToStack(&stack, currentNode->leftChild);
     }
+
+    printf("\n");
 }
 
 void postOrderDisplay(TNode *currentNode) {
@@ -215,6 +216,8 @@ void postOrderDisplay(TNode *currentNode) {
 
 
     } while (!isEmptyStack(stack));
+
+    printf("\n");
 }
 
 void inOrderRecDisplay(TNode *root) {
@@ -242,6 +245,24 @@ void postOrderRecDisplay(TNode *root) {
     postOrderRecDisplay(root->leftChild);
     postOrderRecDisplay(root->rightChild);
     printf("%d ", root->data);
+}
+
+TNode* maxElement(TNode *root) {
+    while (root->rightChild != NULL) {
+        root = root->rightChild;
+    }
+
+    return root;
+    // printf("%d \n", root->data);
+}
+
+TNode* minElement(TNode *root) {
+    while (root->leftChild != NULL) {
+        root = root->leftChild;
+    }
+
+    return root;
+    // printf("%d \n", root->data);
 }
 
 
@@ -287,22 +308,4 @@ TNode* peekOnStack(SNode *top) {
 
 int isEmptyStack(SNode *top) {
     return top == NULL ? 1 : 0;
-}
-
-TNode* maxElement(TNode *root) {
-    while (root->rightChild != NULL) {
-        root = root->rightChild;
-    }
-
-    return root;
-    // printf("%d \n", root->data);
-}
-
-TNode* minElement(TNode *root) {
-    while (root->leftChild != NULL) {
-        root = root->leftChild;
-    }
-
-    return root;
-    // printf("%d \n", root->data);
 }

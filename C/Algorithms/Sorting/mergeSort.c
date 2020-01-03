@@ -14,7 +14,7 @@ void merge(int arr[], int low, int mid, int high) {
             arr2[k++] = arr[j++];
     }
 
-    // Copies rest of the elements in either of the arrays
+    // Copies rest of the elements present in either of the arrays
     for (; i<=mid; i++)
         arr2[k++] = arr[i];
     for (; j<=high; j++)
@@ -38,6 +38,7 @@ void display(int arr[], int n) {
     int i;
     for (i=0; i<n; i++)
         printf("%d ", arr[i]);
+    printf("\n");
 } 
  
 int main() {
